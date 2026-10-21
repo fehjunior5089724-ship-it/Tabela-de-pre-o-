@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monte seu bolo | Confeitaria</title>
+<style>
+:root{--bg:#fffaf7;--card:#fff;--ink:#35251f;--muted:#78665f;--accent:#7d3f56;--accent2:#f3e5e8;--line:#eadbd5;--good:#276749}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:30px 18px 24px;text-align:center;background:linear-gradient(135deg,#f5e3e8,#fff4e9)}
+header .eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:750}
+h1{font-size:clamp(1.8rem,6vw,2.6rem);margin:8px 0}header p{margin:0 auto;max-width:560px;color:var(--muted)}
+main{max-width:760px;margin:20px auto;padding:0 14px 40px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0;box-shadow:0 4px 18px #53331b08}
+h2{font-size:1.08rem;margin:0 0 12px}.hint{font-size:.88rem;color:var(--muted);margin:-5px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px}
+.choice{position:relative;display:block;border:1px solid var(--line);border-radius:12px;padding:12px;cursor:pointer;background:white;min-height:52px}
+.choice:has(input:checked){border-color:var(--accent);background:var(--accent2);box-shadow:inset 0 0 0 1px var(--accent)}
+.choice input{accent-color:var(--accent);margin-right:7px}
+.choice small{display:block;color:var(--muted);margin:5px 0 0 24px}
+.field{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+input[type=text],input[type=tel],input[type=date],textarea,select{font:inherit;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);width:100%}
+textarea{min-height:84px;resize:vertical}
+.pricebox{position:sticky;bottom:8px;background:#fff;border:1px solid var(--line);box-shadow:0 8px 30px #35251f1a;border-radius:16px;padding:16px;z-index:3}
+.totalrow{display:flex;justify-content:space-between;align-items:center;gap:12px}.total{font-size:1.7rem;font-weight:800;color:var(--accent)}
+.breakdown{font-size:.9rem;color:var(--muted);margin:8px 0 14px;white-space:pre-line}
+button{font:inherit;font-weight:750;border:0;border-radius:12px;padding:14px 16px;cursor:pointer}
+.primary{background:var(--accent);color:#fff;width:100%}.secondary{background:var(--accent2);color:var(--accent);width:100%;margin-top:8px}
+.notice{font-size:.82rem;color:var(--muted);margin-top:10px}
+footer{text-align:center;font-size:.8rem;color:var(--muted);padding:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">Confeitaria • Encomendas</div>
+  <h1>Monte seu bolo 🎂</h1>
+  <p>Escolha suas combinações e veja uma estimativa do valor. O pedido será confirmado pelo WhatsApp.</p>
+</header>
+<main>
+  <form id="cakeForm">
+    <section class="card">
+      <h2>1. Tamanho do bolo</h2>
+      <p class="hint">Valores de demonstração. Troque pelos seus preços reais antes de publicar.</p>
+      <div class="grid" id="sizeChoices">
+        <label class="choice"><input type="radio" name="size" value="1 kg" data-price="65" checked>1 kg<small>R$ 65,00 (teste)</small></label>
+        <label class="choice"><input type="radio" name="size" value="1,5 kg" data-price="90">1,5 kg<small>R$ 90,00 (teste)</small></label>
+        <label class="choice"><input type="radio" name="size" value="2 kg" data-price="120">2 kg<small>R$ 120,00 (teste)</small></label>
+        <label class="choice"><input type="radio" name="size" value="3 kg" data-price="175">3 kg<small>R$ 175,00 (teste)</small></label>
+      </div>
+    </section>
+    <section class="card">
+      <h2>2. Massa</h2>
+      <div class="grid">
+        <label class="choice"><input type="radio" name="mass" value="Branca" checked>Branca</label>
+        <label class="choice"><input type="radio" name="mass" value="Chocolate">Chocolate</label>
+      </div>
+    </section>
+    <section class="card">
+      <h2>3. Recheios</h2>
+      <p class="hint">Marque até dois recheios. Neste protótipo, cada recheio premium marcado soma R$ 10.</p>
+      <div class="grid">
+        <label class="choice"><input type="checkbox" name="filling" value="Brigadeiro" data-premium="0">Brigadeiro</label>
+        <label class="choice"><input type="checkbox" name="filling" value="Ninho" data-premium="0">Ninho</label>
+        <label class="choice"><input type="checkbox" name="filling" value="Prestígio" data-premium="0">Prestígio</label>
+        <label class="choice"><input type="checkbox" name="filling" value="Ninho com Nutella" data-premium="1">Ninho com Nutella<small>+ R$ 10 (teste)</small></label>
+        <label class="choice"><input type="checkbox" name="filling" value="Morango" data-premium="1">Morango<small>+ R$ 10 (teste)</small></label>
+        <label class="choice"><input type="checkbox" name="filling" value="Dois amores" data-premium="0">Dois amores</label>
+      </div>
+    </section>
+    <section class="card">
+      <h2>4. Cobertura</h2>
+      <div class="grid">
+        <label class="choice"><input type="radio" name="cover" value="Chantininho" checked>Chantininho</label>
+        <label class="choice"><input type="radio" name="cover" value="Ganache">Ganache</label>
+        <label class="choice"><input type="radio" name="cover" value="Brigadeiro de Ninho">Brigadeiro de Ninho</label>
+      </div>
+    </section>
+    <section class="card">
+      <h2>5. Decoração</h2>
+      <p class="hint">Decoração personalizada soma R$ 15 neste exemplo.</p>
+      <div class="grid">
+        <label class="choice"><input type="radio" name="decoration" value="Simples" data-price="0" checked>Simples<small>Incluída no preço-base</small></label>
+        <label class="choice"><input type="radio" name="decoration" value="Frutas" data-price="15">Com frutas<small>+ R$ 15 (teste)</small></label>
+        <label class="choice"><input type="radio" name="decoration" value="Personalizada" data-price="15">Personalizada<small>+ R$ 15 (teste)</small></label>
+      </div>
+    </section>
+    <section class="card">
+      <h2>6. Dados da encomenda</h2>
+      <label class="field">Seu nome<input type="text" id="customer" placeholder="Como podemos te chamar?" required></label>
+      <label class="field">Data desejada<input type="date" id="date" required></label>
+      <label class="field">Mensagem na decoração (opcional)<input type="text" id="message" placeholder="Ex.: Feliz aniversário, Ana!"></label>
+      <label class="field">Observações (opcional)<textarea id="notes" placeholder="Cores, tema, alergias a informar, retirada ou entrega..."></textarea></label>
+    </section>
+  </form>
+  <section class="pricebox" aria-live="polite">
+    <div class="totalrow"><div><strong>Preço estimado</strong><div class="notice">Confirme disponibilidade e valor final pelo WhatsApp.</div></div><div class="total" id="total">R$ 65,00</div></div>
+    <div class="breakdown" id="breakdown">Base do bolo: R$ 65,00</div>
+    <button class="primary" id="send">Encomendar pelo WhatsApp</button>
+    <button class="secondary" id="copy">Copiar resumo do pedido</button>
+    <div class="notice">Demonstração: os preços precisam ser revisados antes de usar com clientes. O botão abre o WhatsApp para você enviar a mensagem.</div>
+  </section>
+</main>
+<footer>Obrigado por escolher nossa confeitaria 💗</footer>
+<script>
+/* CONFIGURE AQUI: coloque seu número com código do país e DDD, somente números.
+   Exemplo fictício: 5511999999999. Não use o exemplo como seu número. */
+const WHATSAPP_NUMBER = "55DDNUMEROAQUI";
+const money = n => n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const checked = name => document.querySelector(`input[name="${name}"]:checked`);
+const allChecked = name => [...document.querySelectorAll(`input[name="${name}"]:checked`)];
+function selectedText(name){return checked(name)?.value || "Não selecionado"}
+function calculate(){
+  const size = checked('size');
+  const base = Number(size?.dataset.price || 0);
+  const fillings = allChecked('filling');
+  const premiumCount = fillings.filter(x=>x.dataset.premium==='1').length;
+  const premiumExtra = premiumCount * 10;
+  const decor = checked('decoration');
+  const decorExtra = Number(decor?.dataset.price || 0);
+  const total = base + premiumExtra + decorExtra;
+  document.getElementById('total').textContent = money(total);
+  let lines = [`Base do bolo (${size?.value || ''}): ${money(base)}`];
+  if(premiumExtra) lines.push(`Adicionais de recheio premium (${premiumCount}): ${money(premiumExtra)}`);
+  if(decorExtra) lines.push(`Adicional de decoração: ${money(decorExtra)}`);
+  document.getElementById('breakdown').textContent = lines.join('\n');
+  return {base,premiumExtra,decorExtra,total,fillings};
+}
+document.getElementById('cakeForm').addEventListener('change', e=>{
+  if(e.target.name==='filling'){
+    const selected=allChecked('filling');
+    if(selected.length>2){e.target.checked=false; alert('Escolha no máximo dois recheios.');}
+  }
+  calculate();
+});
+function makeMessage(){
+  const c=calculate();
+  const date=document.getElementById('date').value;
+  const datePt=date ? date.split('-').reverse().join('/') : 'A combinar';
+  return [
+    'Olá! Quero solicitar uma encomenda de bolo 🎂',
+    '',
+    `Nome: ${document.getElementById('customer').value.trim()}`,
+    `Tamanho: ${selectedText('size')}`,
+    `Massa: ${selectedText('mass')}`,
+    `Recheio(s): ${c.fillings.map(x=>x.value).join(' + ') || 'A combinar'}`,
+    `Cobertura: ${selectedText('cover')}`,
+    `Decoração: ${selectedText('decoration')}`,
+    `Data desejada: ${datePt}`,
+    `Mensagem no bolo: ${document.getElementById('message').value.trim() || 'Não informada'}`,
+    `Observações: ${document.getElementById('notes').value.trim() || 'Nenhuma'}`,
+    '',
+    `Preço estimado: ${money(c.total)}`,
+    '',
+    'Por favor, confirme a disponibilidade e o valor final. Obrigado(a)!'
+  ].join('\n');
+}
+document.getElementById('send').addEventListener('click',()=>{
+  const form=document.getElementById('cakeForm');
+  if(!form.reportValidity()) return;
+  const msg=makeMessage();
+  if(WHATSAPP_NUMBER.includes('AQUI') || !/^\d{10,15}$/.test(WHATSAPP_NUMBER)){
+    alert('Antes de usar, edite o arquivo e substitua WHATSAPP_NUMBER pelo número da confeitaria com código do país e DDD, somente números.');
+    return;
+  }
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,'_blank','noopener');
+});
+document.getElementById('copy').addEventListener('click',async()=>{
+  const form=document.getElementById('cakeForm');
+  if(!form.reportValidity()) return;
+  try{await navigator.clipboard.writeText(makeMessage());alert('Resumo copiado!');}
+  catch(e){prompt('Copie seu resumo:',makeMessage());}
+});
+calculate();
+</script>
+</body>
+</html>
